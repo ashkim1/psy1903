@@ -18,3 +18,16 @@ if (response == answer) {
 }
 
 alert(feedback + " The expected answer is " + answer + ".");
+
+
+// Misc Practice Part B
+let age = prompt('How old are you?');
+if (age < 12) {
+    alert('Child');
+}
+if (age >= 12 && age < 18) {
+    alert('Teenager');
+}
+if (age >= 18) {
+    alert('Adult');
+}
