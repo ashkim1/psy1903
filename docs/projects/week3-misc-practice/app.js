@@ -31,3 +31,18 @@ if (age >= 12 && age < 18) {
 if (age >= 18) {
     alert('Adult');
 }
+
+
+// Misc Practice Part C
+let wholeNumber = prompt("Please enter a whole number.");
+
+let feedbackNum = "";
+
+if (wholeNumber % 2 == 0) {
+    feedbackNum = "even";
+}
+if (wholeNumber % 2 == 1) {
+    feedbackNum = "odd";
+}
+
+alert("The number you entered is " + feedbackNum + ".");
