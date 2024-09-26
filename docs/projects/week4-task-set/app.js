@@ -9,15 +9,30 @@
 
 
 
-// convertTemp
+// // convertTemp
 
-function convertTemp(temp, convertTo) {
-    if (convertTo == 'c') {
-        return ((temp - 32) / 1.8);
-    } else if (convertTo == 'f') {
-        return ((temp * 1.8) + 32);
+// function convertTemp(temp, convertTo) {
+//     if (convertTo == 'c') {
+//         return ((temp - 32) / 1.8);
+//     } else if (convertTo == 'f') {
+//         return ((temp * 1.8) + 32);
+//     }
+// }
+
+// console.log(convertTemp(10, 'c')); // -12.2222
+// console.log(convertTemp(10, 'f')); // 50
+
+
+
+// getWordLengths
+
+function getWordLengths(words) {
+    let length = [];
+    for (let word of words) {
+        length.push(word.length);
     }
+    return length;
 }
 
-console.log(convertTemp(10, 'c')); // -12.2222
-console.log(convertTemp(10, 'f')); // 50
+words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
+console.log(getWordLengths(words)); // [5, 6, 6, 4, 5]
