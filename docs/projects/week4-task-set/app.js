@@ -24,15 +24,32 @@
 
 
 
-// getWordLengths
+// // getWordLengths
 
-function getWordLengths(words) {
-    let length = [];
+// function getWordLengths(words) {
+//     let length = [];
+//     for (let word of words) {
+//         length.push(word.length);
+//     }
+//     return length;
+// }
+
+// words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
+// console.log(getWordLengths(words)); // [5, 6, 6, 4, 5]
+
+
+
+// getLongestWord
+
+function getLongestWord(words) {
+    let longestWord = '';
     for (let word of words) {
-        length.push(word.length);
+        if (word.length > longestWord.length) {
+            longestWord = word;
+        }
     }
-    return length;
+    return longestWord;
 }
 
-words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
-console.log(getWordLengths(words)); // [5, 6, 6, 4, 5]
+let words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
+console.log(getLongestWord(words)); // banana
