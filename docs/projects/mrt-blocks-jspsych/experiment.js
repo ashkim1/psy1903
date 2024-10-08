@@ -76,6 +76,55 @@ for (let block of conditions) {
     }
 }
 
+// Results Trial //
+let resultsTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    choices: ['NO KEYS'],
+    async: false,
+    stimulus: `
+        <h1>Please wait...</h1>
+        <span class='loader'></span>
+        <p>We are saving the results of your inputs.</p>
+        `,
+    on_start: function () {
+        let prefix = 'mrt';
+        let dataPipeExperimentId = 'your-experiment-id-here';
+        let forceOSFSave = false;
+
+        let results = jsPsych.data
+            .get()
+            .filter({ collect: true })
+            .ignore(['stimulus', 'trial_type', 'plugin_version', 'collect'])
+            .csv();
+
+        let participantId = new Date().toISOString().replace(/T/, '-').replace(/\..+/, '').replace(/:/g, '-');
+
+        let isLocalHost = window.location.href.includes('localhost');
+
+        let destination = '/save';
+        if (!isLocalHost || forceOSFSave) {
+            destination = 'https://pipe.jspsych.org/api/data/';
+        }
+
+        fetch(destination, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: '*/*',
+            },
+            body: JSON.stringify({
+                experimentID: dataPipeExperimentId,
+                filename: prefix + '-' + participantId + '.csv',
+                data: results,
+            }),
+        }).then(data => {
+            console.log(data);
+            jsPsych.finishTrial();
+        })
+    }
+}
+timeline.push(resultsTrial);
+
 
 // Debrief //
 let debriefTrial = {
