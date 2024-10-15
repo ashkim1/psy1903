@@ -1,0 +1,13 @@
+.expName {
+    font-family: Georgia;
+    color: black;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.key {
+    border: 1px solid black;
+    border-radius: 2px;
+    display: inline-block;
+    padding: 5px 10px;
+}
