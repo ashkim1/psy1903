@@ -22,7 +22,7 @@ let trial = {
 let welcomeTrial = { // Define a welcome trial using jsPsych’s jsPsychHtmlKeyboardResponse plugin
     type: jsPsychHtmlKeyboardResponse, // Indicate the plugin type we’re using
     stimulus: `
-    <h1 class='instructions'>Welcome to the Lexical Decision Task!</h1> 
+    <h1 class='instructions'>Welcome to the Lexical Decision Task</h1> 
     <p>In this experiment, you will be shown a series of characters and asked to categorize whether the characters make up a word or not.</p>
     <p>There are three parts to this experiment.</p>
     <p class='instructions'>Press <span class='key'>SPACE</span> to begin the first part.</p>
