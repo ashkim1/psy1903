@@ -37,7 +37,11 @@ let videoTrial = {
     <p> Press the <span class = 'key'>SPACE</span> key when you have completed the video and are ready to move on to the next task. </p>
     `,
     choices: [' '],
-
+    data: {
+        collect: true,
+        trialType: 'prime',
+        whichPrime: 'video'
+    },
 };
 timeline.push(videoTrial);
 
@@ -62,7 +66,11 @@ let survey = {
         { prompt: "It is normal to have issues with mental health.", labels: likertScale },
         { prompt: "Physical health issues", labels: likertScale },
     ],
-    randomize_question_order: true
+    randomize_question_order: true,
+    data: {
+        collect: true,
+        trialType: 'questionnaire',
+    },
 };
 timeline.push(survey);
 
@@ -92,7 +100,7 @@ for (let block of conditions) {
     }
     timeline.push(blockintroTrial);
 
-    //Trial inner loop
+    // Trial inner loop
     for (let trial of block.trials) {
         let iatTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -112,16 +120,15 @@ for (let block of conditions) {
             },
             on_finish: function (data) {
                 if (data.response == trial.expectedResponse) {
-                    iatTrial.data.correct = true;
+                    data.correct = true;
                 } else {
-                    iatTrial.data.correct = false;
-                }//not finished yet 
+                    data.correct = false;
+                };
             }
-
         }
         timeline.push(iatTrial);
 
-        //Adding the fixation trial inbetween iatTrials
+        // Adding the fixation trial in between iatTrials
         let fixationTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `+ `,
