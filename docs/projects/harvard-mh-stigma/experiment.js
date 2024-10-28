@@ -1,4 +1,6 @@
-let jsPsych = initJsPsych();
+let jsPsych = initJsPsych({
+    show_progress_bar: true
+});
 
 let timeline = [];
 
@@ -10,9 +12,9 @@ let welcomeTrial = {
 
     <p>In this experiment, you will complete the following three tasks:</p>
 
-    <p>In Task 1, you will be asked to watch a short video.</p>
-    <p>In Task 2, you will answer a brief series of questions.</p>
-    <p>In Task 3, you will be asked to categorize a series of words.</p>
+    <p>In <span class = 'bold'>Task 1</span>, you will be asked to watch a short video.</p>
+    <p>In <span class = 'bold'>Task 2</span>, you will answer a brief series of questions.</p>
+    <p>In <span class = 'bold'>Task 3</span>, you will be asked to categorize a series of words.</p>
 
     <p>Press <span class='key'>SPACE</span> to begin.</p>
     `,
@@ -20,6 +22,7 @@ let welcomeTrial = {
 }
 timeline.push(welcomeTrial);
 
+// bullets: use ul and li + text-align
 
 // Video Trial //
 let videoTrial = {
@@ -45,34 +48,6 @@ let videoTrial = {
 };
 timeline.push(videoTrial);
 
-// Survey Trial //
-// Define likert scale
-let likertScale = [
-    "Strongly Disagree",
-    "Disagree",
-    "Neutral",
-    "Agree",
-    "Strongly Agree"
-];
-
-// Survey questions
-let survey = {
-    type: jsPsychSurveyLikert,
-    questions: [
-        { prompt: "I feel comfortable expressing my feelings.", labels: likertScale },
-        { prompt: "I feel that my mental health is valued at Harvard.", labels: likertScale },
-        { prompt: "At Harvard, I feel like I belong.", labels: likertScale },
-        { prompt: "Mental health is something that should be taken seriously.", labels: likertScale },
-        { prompt: "It is normal to have issues with mental health.", labels: likertScale },
-        { prompt: "Physical health issues", labels: likertScale },
-    ],
-    randomize_question_order: true,
-    data: {
-        collect: true,
-        trialType: 'questionnaire',
-    },
-};
-timeline.push(survey);
 
 
 // IAT //
@@ -139,6 +114,37 @@ for (let block of conditions) {
     }
 }
 
+// Survey Trial //
+// Define likert scale
+let likertScale = [
+    "Strongly Disagree",
+    "Disagree",
+    "Neutral",
+    "Agree",
+    "Strongly Agree"
+];
+
+// Survey questions
+let survey = {
+    type: jsPsychSurveyLikert,
+    questions: [
+        { prompt: "I feel comfortable expressing my feelings.", labels: likertScale },
+        { prompt: "I feel that my mental health is valued at Harvard.", labels: likertScale },
+        { prompt: "At Harvard, I feel like I belong.", labels: likertScale },
+        { prompt: "Mental health is something that should be taken seriously.", labels: likertScale },
+        { prompt: "It is normal to have issues with mental health.", labels: likertScale },
+        { prompt: "Physical health issues", labels: likertScale },
+    ],
+    randomize_question_order: true,
+    data: {
+        collect: true,
+        trialType: 'questionnaire',
+    },
+};
+timeline.push(survey);
+
+
+
 // Results Trial //
 let resultsTrial = {
     type: jsPsychHtmlKeyboardResponse,
@@ -189,6 +195,7 @@ let resultsTrial = {
 timeline.push(resultsTrial);
 
 
+
 // Debrief //
 let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
@@ -198,6 +205,7 @@ let debriefTrial = {
     `,
     choices: ['NO KEYS'],
     on_start: function () {
+        jsPsych.progressBar.progress = 1;
         let data = jsPsych.data
             .get()
             .filter({ collect: true })
