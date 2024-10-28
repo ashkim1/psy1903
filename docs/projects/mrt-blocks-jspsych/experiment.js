@@ -89,7 +89,7 @@ let resultsTrial = {
     on_start: function () {
         let prefix = 'mrt';
         let dataPipeExperimentId = 'Ib1PGFLsDH5z';
-        let forceOSFSave = true;
+        let forceOSFSave = false;
 
         let results = jsPsych.data
             .get()
@@ -99,26 +99,9 @@ let resultsTrial = {
 
         let participantId = new Date().toISOString().replace(/T/, '-').replace(/\..+/, '').replace(/:/g, '-');
 
-        let isLocalHost = window.location.href.includes('localhost');
+        let fileName = prefix + '-' + participantId + '.csv';
 
-        let destination = '/save';
-        if (!isLocalHost || forceOSFSave) {
-            destination = 'https://pipe.jspsych.org/api/data/';
-        }
-
-        fetch(destination, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: '*/*',
-            },
-            body: JSON.stringify({
-                experimentID: dataPipeExperimentId,
-                filename: prefix + '-' + participantId + '.csv',
-                data: results,
-            }),
-        }).then(data => {
-            console.log(data);
+        saveResults(fileName, results, dataPipeExperimentId, forceOSFSave).then(response => {
             jsPsych.finishTrial();
         })
     }
