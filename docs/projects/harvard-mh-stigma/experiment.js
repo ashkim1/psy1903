@@ -12,9 +12,13 @@ let welcomeTrial = {
 
     <p>In this experiment, you will complete the following three tasks:</p>
 
-    <p>In <span class = 'bold'>Task 1</span>, you will be asked to watch a short video.</p>
-    <p>In <span class = 'bold'>Task 2</span>, you will answer a brief series of questions.</p>
-    <p>In <span class = 'bold'>Task 3</span>, you will be asked to categorize a series of words.</p>
+    <span class='box'>
+    <ul>
+        <li>In Task 1, you will be asked to watch a short video.</li>
+        <li>In Task 2, you will be asked to categorize a series of words.</li>
+        <li>In Task 3, you will answer a brief series of questions.</li>
+    </ul>
+    </span>
 
     <p>Press <span class='key'>SPACE</span> to begin.</p>
     `,
@@ -22,16 +26,23 @@ let welcomeTrial = {
 }
 timeline.push(welcomeTrial);
 
-// bullets: use ul and li + text-align
 
 // Video Trial //
+
+let primeVideos = [
+    { url: "https://www.youtube.com/embed/AYAHkql75qM?si=OVFCmPnPwVTmPB3K", label: 'harvard' },
+    { url: "https://www.youtube.com/embed/CKIMKEXKUas?si=kUzLdVqQkcWFjVJL", label: 'degree' }
+];
+
+let randomVideo = primeVideos[Math.floor(Math.random() * primeVideos.length)];
+
 let videoTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: ` 
     <h1> <span class = 'title'>Task 1 of 3</span></h1>
     <p> Please watch the following video </p>
     <iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/AYAHkql75qM?si=OVFCmPnPwVTmPB3K" 
+        src="${randomVideo.url}" 
         title="YouTube video player" frameborder="0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media;gyroscope; picture-in-picture; web-share" 
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
@@ -43,8 +54,8 @@ let videoTrial = {
     data: {
         collect: true,
         trialType: 'prime',
-        whichPrime: 'video'
-    },
+        whichPrime: randomVideo.label
+    }
 };
 timeline.push(videoTrial);
 
