@@ -139,12 +139,16 @@ let likertScale = [
 let survey = {
     type: jsPsychSurveyLikert,
     questions: [
-        { prompt: "I feel comfortable expressing my feelings.", labels: likertScale },
-        { prompt: "I feel that my mental health is valued at Harvard.", labels: likertScale },
-        { prompt: "At Harvard, I feel like I belong.", labels: likertScale },
-        { prompt: "Mental health is something that should be taken seriously.", labels: likertScale },
-        { prompt: "It is normal to have issues with mental health.", labels: likertScale },
-        { prompt: "Physical health issues", labels: likertScale },
+        { prompt: "If I had a mental disorder, I would feel ashamed.", labels: likertScale },
+        { prompt: "If I had a mental disorder and I could not solve my own problems, I would feel bad about myself.", labels: likertScale },
+        { prompt: "I would feel a failure if I became mentally unwell.", labels: likertScale },
+        { prompt: "If I had a mental disorder, I would feel like no one would want to get close to me.", labels: likertScale },
+        { prompt: "If I had a mental disorder, I would feel weak.", labels: likertScale },
+        { prompt: "If I had a mental disorder, I would be happy to seek help from a mental health professional.", labels: likertScale },
+        { prompt: "I would feel comfortable discussing a colleague's mental health problem with them.", labels: likertScale },
+        { prompt: "I'm good at talking to people with mental health problems.", labels: likertScale },
+        { prompt: "If I were an employer, I would feel comfortable employing someone with a mental disorder.", labels: likertScale },
+        { prompt: "Having a mental disorder is nothing to be ashamed of.", labels: likertScale },
     ],
     randomize_question_order: true,
     data: {
@@ -152,6 +156,7 @@ let survey = {
         trialType: 'questionnaire',
     },
 };
+
 timeline.push(survey);
 
 
