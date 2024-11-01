@@ -1,8 +1,11 @@
+let participantId = getCurrentTimestamp();
+
 let jsPsych = initJsPsych({
     extensions: [
         { type: jsPsychExtensionWebgazer }
     ]
 });
+
 let timeline = [];
 
 // Welcome Trial //
@@ -142,7 +145,7 @@ let resultsTrial = {
         let prefix = 'plugin-demo';
         let dataPipeExperimentId = 'Ib1PGFLsDH5z';
         let forceOSFSave = false;
-        let participantId = new Date().toISOString().replace(/T/, '-').replace(/\..+/, '').replace(/:/g, '-');
+
         let fileName = prefix + '-' + participantId + '.csv';
 
         saveResults(fileName, results, dataPipeExperimentId, forceOSFSave).then(response => {
@@ -155,11 +158,20 @@ timeline.push(resultsTrial);
 // Debrief Trial //
 let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-    <h1>Thank you for participating in this demo experiment!</h1> 
-    <p>You can close this tab.</p>
-    `,
+    stimulus: function (data) {
+
+        let linkToQualtricsSurvey = `https://harvard.az1.qualtrics.com/jfe/form/SV_6A3G0d3EVr8JcOO?experimentParticipantId=${participantId}`
+
+        return `
+        <h1>Thank you!</h1>
+        <p>
+            To complete your response, 
+            please follow <a href='${linkToQualtricsSurvey}'>this link</a> 
+            and complete the survey you see there.
+        </p>
+    `},
     choices: ['NO KEYS'],
+
     on_start: function () {
         let data = jsPsych.data
             .get()
