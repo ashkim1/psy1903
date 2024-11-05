@@ -189,7 +189,7 @@ let resultsTrial = {
     on_start: function () {
         let prefix = 'iat';
         let dataPipeExperimentId = 'Ib1PGFLsDH5z';
-        let forceOSFSave = false;
+        let forceOSFSave = true;
 
         let results = jsPsych.data
             .get()
