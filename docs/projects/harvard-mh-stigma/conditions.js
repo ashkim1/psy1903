@@ -1,17 +1,17 @@
 // Modify the following `blocksA`, `blocksB`, and `words` arrays with appropriate values for your experiment
 let blocksA = [
-    ['conditions', 'treatment'],
+    ['disorders', 'treatment'],
     ['humanizing', 'stigmatizing']
 ];
 
 let blocksB = [
-    ['conditions or humanizing', 'treatment or stigmatizing'],
-    ['conditions or stigmatizing', 'treatment or humanizing']
+    ['disorders or humanizing', 'treatment or stigmatizing'],
+    ['disorders or stigmatizing', 'treatment or humanizing']
 ];
 
 // There should be 10 words per category
 let words = {
-    'conditions': ['depression', 'anxiety', 'obsessive compulsive disorder', 'post traumatic stress disorder', 'eating disorder', 'body dysmorphia', 'bipolar disorder', 'personality disorder', 'schizophrenia', 'substance abuse disorder'],
+    'disorders': ['depression', 'anxiety', 'obsessive compulsive disorder', 'post traumatic stress disorder', 'eating disorder', 'body dysmorphia', 'bipolar disorder', 'personality disorder', 'schizophrenia', 'substance abuse disorder'],
     'treatment': ['therapy', 'medication', 'support group', 'counseling', 'psychiatry', 'CAMHS', 'peer counseling', 'SHARE counselors', 'tutors', 'resident deans'],
     'humanizing': ['capable', 'normal', 'challenging', 'feeling', 'sane', 'rational', 'realistic', 'human', 'reasonable', 'difficult'],
     'stigmatizing': ['crazy', 'insane', 'psychotic', 'unstable', 'weak', 'fragile', 'dangerous', 'unpredictable', 'weird', 'useless'],
