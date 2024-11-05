@@ -1,20 +1,20 @@
 // Modify the following `blocksA`, `blocksB`, and `words` arrays with appropriate values for your experiment
 let blocksA = [
-    ['mental health conditions', 'mental health treatment'],
-    ['humanizing words', 'stigmatizing words']
+    ['conditions', 'treatment'],
+    ['humanizing', 'stigmatizing']
 ];
 
 let blocksB = [
-    ['mental health conditions or humanizing words', 'mental health treatment or stigmatizing words'],
-    ['mental health conditions or stigmatizing words', 'mental health treatment or humanizing words']
+    ['conditions or humanizing', 'treatment or stigmatizing'],
+    ['conditions or stigmatizing', 'treatment or humanizing']
 ];
 
 // There should be 10 words per category
 let words = {
-    'mental health conditions': ['depression', 'anxiety', 'obsessive compulsive disorder', 'post traumatic stress disorder', 'eating disorder', 'body dysmorphia', 'bipolar disorder', 'personality disorder', 'schizophrenia', 'substance abuse disorder'],
-    'mental health treatment': ['therapy', 'medication', 'support group', 'counseling', 'psychiatry', 'CAMHS', 'peer counseling', 'SHARE counselors', 'tutors', 'resident deans'],
-    'humanizing words': ['capable', 'normal', 'challenging', 'feeling', 'sane', 'rational', 'realistic', 'human', 'reasonable', 'difficult'],
-    'stigmatizing words': ['crazy', 'insane', 'psychotic', 'unstable', 'weak', 'fragile', 'dangerous', 'unpredictable', 'weird', 'useless'],
+    'conditions': ['depression', 'anxiety', 'obsessive compulsive disorder', 'post traumatic stress disorder', 'eating disorder', 'body dysmorphia', 'bipolar disorder', 'personality disorder', 'schizophrenia', 'substance abuse disorder'],
+    'treatment': ['therapy', 'medication', 'support group', 'counseling', 'psychiatry', 'CAMHS', 'peer counseling', 'SHARE counselors', 'tutors', 'resident deans'],
+    'humanizing': ['capable', 'normal', 'challenging', 'feeling', 'sane', 'rational', 'realistic', 'human', 'reasonable', 'difficult'],
+    'stigmatizing': ['crazy', 'insane', 'psychotic', 'unstable', 'weak', 'fragile', 'dangerous', 'unpredictable', 'weird', 'useless'],
 };
 
 // Your final experiment should show 36 words per category; 
