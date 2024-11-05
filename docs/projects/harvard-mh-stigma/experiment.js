@@ -26,6 +26,21 @@ let welcomeTrial = {
 }
 timeline.push(welcomeTrial);
 
+let consentTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+    <h1> <span class = 'title'>Consent</span></h1>
+
+    <p>This experiment is an educational exercise about learning to program and analyze a psychological experiment and not a “real” scientific experiment. No identifying information is collected, and data will not be shared beyond our class.</p>
+        
+    <p>If you agree to help out by completing the tasks and questionnaires, please press <span class='key'>SPACE</span> to continue. Otherwise, you may close this tab.</p>
+    
+    <p>If you have any questions, please reach out to Dr. Garth Coombs <garthcoombs@fas.harvard.edu>, one of the head instructors of PSY 1903: Programming for Psychological Scientists.</p>
+    `,
+    choices: [' '],
+}
+timeline.push(consentTrial);
+
 
 // Video Trial //
 

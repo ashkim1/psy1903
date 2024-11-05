@@ -21,7 +21,7 @@ let words = {
 // when developing your experiment you can reduce this number
 // to expedite the process of testing the experiment
 // Always set the count to an even number
-let count = 4;
+let count = 36;
 
 // The following code will process the above information into a `conditions` array you 
 // can use to structure your experiment. 
