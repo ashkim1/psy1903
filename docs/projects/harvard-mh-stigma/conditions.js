@@ -53,7 +53,7 @@ function generateConditions() {
 
             // In the case of compound categories (e.g. "women or career") we need to split
             // this into the individual categories (e.g. "women" and "career") to build our pool of words
-            if (category.includes('or')) {
+            if (category.includes(' or ')) {
                 let parts = category.split(' or ');
                 wordChoices = shuffle(words[parts[0]].concat(words[parts[1]]));
             } else {
