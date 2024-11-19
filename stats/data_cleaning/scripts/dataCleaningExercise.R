@@ -125,5 +125,35 @@ for (file in files_list) {
 
 
 ## Outside of the for loop, save the new dScores data frame using write.csv() into your data_cleaning/data subdirectory:
-write.csv(dScores,"~/Desktop/psy1903/stats/data_cleaning/data/participant_dScores.csv", row.names = FALSE)
+write.csv(dScores,"~/Desktop/PSY 1903/psy1903/stats/data_cleaning/data/participant_dScores.csv", row.names = FALSE)
+# false b/c the numbers by the rows are not meaningful and we don't want to save that
+
+
+
+#### Questionnaire Scoring -----------------------------------------------------
+
+## Read in data file to a data frame called iat_test
+iat_test <- read.csv("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/data/my-iat-test-data.csv")
+
+## Extract questionnaire data
+json_data <- iat_test[iat_test$trialType == "Questionnaire", "response"]
+
+## Use fromJSON to Convert from JSON to data frame
+questionnaire <- fromJSON(json_data)
+str(questionnaire)
+questionnaire <- as.data.frame(questionnaire)
+
+## Convert to numeric
+questionnaire <- as.data.frame(lapply(questionnaire, as.numeric)) # override questionnaire
+questionnaire2 <- questionnaire
+
+## Reverse score if necessary
+rev_items <- c("question1", "question3", "question5", "question7")
+for (rev_item in rev_items) {
+  questionnaire[,rev_item] <- 5 - questionnaire[,rev_item]
+}
+
+## Calculate mean or sum score
+score <- rowMeans(questionnaire, na.rm = TRUE)
+
 
