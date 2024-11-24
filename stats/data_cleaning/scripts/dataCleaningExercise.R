@@ -1,5 +1,5 @@
 ## Set WD to stats
-#setwd("~/Desktop/PSY 1903/psy1903/stats/")
+# setwd("~/Desktop/PSY 1903/psy1903/stats/")
 
 ## Create new directories
 dir.create("data_cleaning/") # (this will be the parent directory for our R exercises)
@@ -7,8 +7,9 @@ dir.create("data_cleaning/output") # (data visualizations and plots will go here
 dir.create("data_cleaning/scripts") # (this is where we'll save any scripts we create)
 dir.create("data_cleaning/data") # (if we save any intermediary or final data files, they will go here)
 
-#### QUESTION 2 ------
-## Set working directory
+
+
+#### TASK SET 12 ####
 setwd("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/scripts/")
 
 ## Load packages
@@ -18,27 +19,12 @@ p_load("tidyverse", "rstudioapi", "lme4", "emmeans", "psych", "corrplot", "jsonl
 ## Read csv
 iat_data1 <- read.csv("~/Desktop/PSY 1903/psy1903/osfstorage-archive/iat-2024-11-05-22-01-17.csv")
 
-## Examine df
-str(iat_data1)
-summary(iat_data1)
-
-#### QUESTION 3 ----
-## Subset IAT
+## Subset
 iat_data2 <- iat_data1[iat_data1$expectedCategoryAsDisplayed == "disorders or humanizing" |
                          iat_data1$expectedCategoryAsDisplayed == "disorders or stigmatizing" |
                          iat_data1$expectedCategoryAsDisplayed == "treatment or stigmatizing" |
                          iat_data1$expectedCategoryAsDisplayed == "treatment or humanizing",
                        c("trial_index", "rt", "response", "word", "expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory", "correct")]
-
-## Structure of iat_data2
-str(iat_data2)
-summary(iat_data2)
-
-## Convert to factors
-#iat_data2$expectedCategory <- as.factor(iat_data2$expectedCategory)
-#iat_data2$expectedCategoryAsDisplayed <- as.factor(iat_data2$expectedCategoryAsDisplayed)
-#iat_data2$leftCategory <- as.factor(iat_data2$leftCategory)
-#iat_data2$rightCategory <- as.factor(iat_data2$rightCategory)
 
 ## Convert to factors with for loop
 col_list <- c("expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory")
@@ -47,9 +33,8 @@ for (col in col_list) {
 }
 str(iat_data2)
 
-#### QUESTION 4 ----
-## IAT
-## Step 1: Specify your function with one argument, data
+
+#### Q2: Updating d-score Function ----
 calculate_IAT_dscore <- function(data) {
   
   ## Step 2: Select only trials with rt > 300 ms and < 5000 ms (subset full data frame into new data frame called tmp)
@@ -75,85 +60,110 @@ calculate_IAT_dscore <- function(data) {
   ## Step 8: Return D-score
   return(d_score)
 }
-## Test out your function and see if you get a d-score
-calculate_IAT_dscore(data) # output: 0.8726469
+## Test function
+calculate_IAT_dscore(iat_data2) # output: 0.8726469
 
 
-#### QUESTION 5 ----
+
+
+#### Q3: Score Questionnaire Function ----
+## Initiate function called score_questionnaire that accepts a single argument called `data`. Within this function...
+score_questionnaire <- function(data) {
+  
+  ## Extract questionnaire data cell
+  json_data <- data[data$trialType == "questionnaire", "response"]
+  
+  ## Use fromJSON to convert from JSON to data frame
+  questionnaire <- fromJSON(json_data)
+  
+  ## Convert to numeric
+  questionnaire <- as.data.frame(lapply(questionnaire, as.numeric)) # override questionnaire
+  questionnaire2 <- questionnaire
+  
+  ## Reverse score if necessary
+  rev_items <- c("Q5", "Q6", "Q7", "Q8", "Q9")
+  for (rev_item in rev_items) {
+    questionnaire[,rev_item] <- 5 - questionnaire[,rev_item]
+  }
+  ## Calculate & return questionnaire score (mean)
+  score <- rowMeans(questionnaire, na.rm = TRUE)
+  
+  return(score)
+}
+
+## Check
+score_questionnaire(iat_data1) # output: 2.7
+
+
+
+#### Q4: Refactoring within For Loop ----
+#### Q5: Finalizing For Loop ----
 ## Set a variable called directory_path with the path to the location of your data csv files. This directory should *only* 
 directory_path <- "~/Desktop/PSY 1903/psy1903/osfstorage-archive"
 
 ## Create a list of all the files in that directory.
 files_list <- list.files(path = directory_path, pattern = "\\.csv$", full.names = TRUE)
 
-## Create an empty data frame called dScores that has two columns (IAT) or three columns (EST) and as many rows as you have data files (e.g., participants)
-## IAT Version
-dScores <- data.frame(matrix(nrow = length(files_list), ncol = 2))
+## Create an empty data frame w/ *FOUR columns
+dScores <- data.frame(matrix(nrow = length(files_list), ncol = 4))
 
-## Rename the default column names to something meaningful
-## IAT Version
-colnames(dScores) <- c("participant_ID", "d_score")
+## Rename  default column names to something meaningful AND add whichPrime, questionnaire
+colnames(dScores) <- c("participant_ID", "d_score", "whichPrime", "questionnaire")
+
+str(dScores)
 
 ## Initiate variable i to represent row numbers for each iteration, starting with 1
 i = 1
 
-## Now fill in the remaining code following the commented instructions:
-# file <- files_list[[1]] # just for testing for loop
-
-## Step 1: Initiate a for loop that iterates across each file in files_list
+## Initiate a for loop that iterates across each file in files_list
 for (file in files_list) {
   
-  ## Step 2: Use read.csv to read in your file as a temporary data frame called tmp
+  ## Use read.csv to read in your file as a temporary data frame called tmp
   tmp <- read.csv(file)
   
-  ## Step 3: Assign participant_ID as the basename of the file
+  ## "rt" column is numeric
+  tmp$rt <- as.numeric(tmp$rt)
+  
+  ## "correct" column is logical
+  tmp$correct <- is.logical(tmp$correct)
+  
+  ## Assign participant_ID as the basename of the file
   participant_ID <- tools::file_path_sans_ext(basename(file))
-
-  ## Step 4: Isolate the participant_ID column for the current row number (i) and assign it to be the current participant_ID variable
+  
+  ## participant_ID column for the current row number (i) and assign it to be the current participant_ID variable
   dScores[i, "participant_ID"] <- participant_ID
   
-  ## Step 5: Using similar logic, isolate the d_score column for the current row number (i) and assign it to be the current d-score by using our calculate_IAT_dscore on the tmp data file
+  ## Assign the dScores "whichPrime" column to be the current participant's prime label. 
+  dScores[i, "whichPrime"] <- tmp$whichPrime[1]
+  
+  ## Isolate the d_score column for the current row number (i) and assign it to be the current d-score by using our calculate_IAT_dscore on the tmp data file
   dScores[i, "d_score"] <- calculate_IAT_dscore(tmp)
   
-  ## Step 6: Remove the temporary data file tmp  
+  ## Assign the "questionnaire" column to be the output of the score_questionnaire function
+  dScores[i, "questionnaire"] <- score_questionnaire(tmp)
+  
+  ## Remove the temporary data file tmp  
   rm(tmp)
-
-  ## Step 7: Increase our row number variable i by one for the next iteration
+  
+  ## Increase our row number variable i by one for the next iteration
   i <- i + 1
 }
-## Step 8: Check your dScores data frame after you've run your for loop
 
+## "whichPrime" - factor
+dScores$whichPrime <- as.factor(dScores$whichPrime)
+
+## "d_score" and "questionnaire" - numeric
+dScores$d_score <- as.numeric(dScores$d_score)
+dScores$questionnaire <- as.numeric(dScores$questionnaire)
+
+## "participant_ID" - character
+dScores$participant_ID <- as.character(dScores$participant_ID)
+
+## Check your dScores data frame after you've run your for loop
+view(dScores)
+str(dScores)
 
 ## Outside of the for loop, save the new dScores data frame using write.csv() into your data_cleaning/data subdirectory:
 write.csv(dScores,"~/Desktop/PSY 1903/psy1903/stats/data_cleaning/data/participant_dScores.csv", row.names = FALSE)
-# false b/c the numbers by the rows are not meaningful and we don't want to save that
-
-
-
-#### Questionnaire Scoring -----------------------------------------------------
-
-## Read in data file to a data frame called iat_test
-iat_test <- read.csv("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/data/my-iat-test-data.csv")
-
-## Extract questionnaire data
-json_data <- iat_test[iat_test$trialType == "Questionnaire", "response"]
-
-## Use fromJSON to Convert from JSON to data frame
-questionnaire <- fromJSON(json_data)
-str(questionnaire)
-questionnaire <- as.data.frame(questionnaire)
-
-## Convert to numeric
-questionnaire <- as.data.frame(lapply(questionnaire, as.numeric)) # override questionnaire
-questionnaire2 <- questionnaire
-
-## Reverse score if necessary
-rev_items <- c("question1", "question3", "question5", "question7")
-for (rev_item in rev_items) {
-  questionnaire[,rev_item] <- 5 - questionnaire[,rev_item]
-}
-
-## Calculate mean or sum score
-score <- rowMeans(questionnaire, na.rm = TRUE)
 
 
