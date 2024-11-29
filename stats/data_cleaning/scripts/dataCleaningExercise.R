@@ -159,6 +159,9 @@ dScores$questionnaire <- as.numeric(dScores$questionnaire)
 ## "participant_ID" - character
 dScores$participant_ID <- as.character(dScores$participant_ID)
 
+## Remove rows with NA
+dScores <- na.omit(dScores)
+
 ## Check your dScores data frame after you've run your for loop
 view(dScores)
 str(dScores)
@@ -166,4 +169,113 @@ str(dScores)
 ## Outside of the for loop, save the new dScores data frame using write.csv() into your data_cleaning/data subdirectory:
 write.csv(dScores,"~/Desktop/PSY 1903/psy1903/stats/data_cleaning/data/participant_dScores.csv", row.names = FALSE)
 
+
+
+#### TASK SET 13 ####
+## Q2: Analyze the effect of your IV on your DV with a one-way ANOVA ##
+## formula: aov(DV ~ IV, data = your_data)
+aov <- aov(d_score ~ whichPrime, data = dScores)
+summary(aov)
+
+## Q3: T-Tests
+tukey <- TukeyHSD(aov)
+print(tukey)
+
+## Q4: Correlation
+correlation <- cor.test(dScores$d_score, dScores$questionnaire, 
+                        method = "pearson")
+print(correlation)
+
+## Q5: Base R Histogram
+png("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/output/Fig1_baseR_histogram.png", width = 600, height = 500)
+
+histogram <- hist(dScores$d_score, 
+                  main = "Distribution of D-Scores",
+                  xlab = "D-Scores", 
+                  ylab = "Frequency")
+dev.off()
+
+## Q6: GGPlot Histogram
+png("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/output/Fig2_ggplot_histogram.png", width = 600, height = 500)
+
+ggplot(dScores, aes(x = d_score)) + 
+  geom_histogram(binwidth = 0.15, color = "black", fill = "skyblue") + 
+  labs(title = "Distribution of D-Scores", 
+       x = "D-Scores", 
+       y = "Frequency") + 
+  theme_minimal()
+
+dev.off()
+
+
+## Q7: GGPlot Histogram by Prime
+png("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/output/Fig3_ggplot_histogram_by_prime.png", width = 600, height = 500)
+
+ggplot(dScores, aes(x = d_score)) + 
+  geom_histogram(binwidth = 0.15, color = "black", fill = "skyblue") + 
+  labs(title = "Distribution of D-Scores", 
+       x = "D-Scores", 
+       y = "Frequency") + 
+  theme_classic() +
+  facet_wrap(~ whichPrime)
+
+dev.off()
+
+## Q8: GGPlot Boxplot
+png("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/output/Fig4_ggplot_boxplot.png", width = 600, height = 500)
+
+ggplot(dScores, aes(x = whichPrime, 
+                    y = d_score, 
+                    fill = whichPrime)) +
+  geom_boxplot() + 
+  labs(title = "Effect of Prime on D-Scores", 
+       x = "Prime Condition", 
+       y = "D-Scores") +  # Adds titles and labels
+  theme_classic() +  # Apply the classic theme
+  theme(legend.position = "none") +  # Remove the legend
+  scale_x_discrete(labels = c("harvard" = "Home at Harvard",
+                              "degree" = "College Degree is Hard"))
+
+dev.off()
+
+## Q9: GGPlot Scatterplot
+png("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/output/Fig5_ggplot_scatter.png", width = 600, height = 500)
+
+ggplot(dScores, aes(x = questionnaire, y = d_score)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue") + 
+  labs(title = "Correlation Between Questionnaire and D-Scores", 
+       x = "Questionnaire", 
+       y = "D-Scores") + 
+  theme_classic()
+
+dev.off()
+
+## Q10: GGPlot Theme
+png("~/Desktop/PSY 1903/psy1903/stats/data_cleaning/output/Fig6_custom_theme.png", width = 600, height = 500)
+
+ggplot(dScores, aes(x = d_score)) + 
+  geom_histogram(binwidth = 0.15, color = "black", fill = "darkblue") + 
+  labs(title = "Distribution of D-Scores", 
+       x = "D-Scores", 
+       y = "Frequency") + 
+  theme(
+    plot.title = element_text(family = "Times New Roman", size = 17, face = "bold", color = "black", hjust = 0.5),
+    axis.title.x = element_text(family = "Times New Roman", size = 13, color = "black"),
+    axis.title.y = element_text(family = "Times New Roman", size = 13, color = "black"),
+    
+    axis.text.x = element_text(family = "Times New Roman", size = 12, color = "black"),
+    axis.text.y = element_text(family = "Times New Roman", size = 12, color = "black"),
+    
+    panel.grid.major = element_line(color = "lightgray", size = 0.5),
+    panel.grid.minor = element_line(color = "gray", size = 0.2),
+    
+    panel.background = element_rect(fill = "white", color = "black"),
+    plot.background = element_rect(fill = "white"),
+  ) +
+  facet_wrap(~ whichPrime,
+             labeller = labeller(whichPrime = c("harvard" = "Home at Harvard", 
+                                                "degree" = "College Degree is Hard")))
+
+dev.off()
 
